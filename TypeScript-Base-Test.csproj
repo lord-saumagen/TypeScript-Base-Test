@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.0</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -22,6 +22,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="IO_Stream_test.html" />
+    <Content Include="IO_Stream_test_plainjs.js" />
     <Content Include="TestSuite.html" />
     <Content Include="TypeCode_UInt64_test.html" />
     <Content Include="Utils_Assert_test.html" />
@@ -31,6 +33,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="DATA.ts" />
     <TypeScriptCompile Include="Exception_test.ts" />
+    <TypeScriptCompile Include="IO_Stream_test.ts" />
     <TypeScriptCompile Include="TypeCode_UInt64_test.ts" />
     <TypeScriptCompile Include="Utils_Assert_test.ts" />
     <TypeScriptCompile Include="Utils_test.ts" />

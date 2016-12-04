@@ -91,6 +91,44 @@ module TS_Utils_Assert
   });
 
 
+  QUnit.test("isDate", (assert) => 
+  {
+    assert.ok(TS.Utils.Assert.isDate(new Date()), "Should return true for a test on a new created date.");
+    assert.ok(!TS.Utils.Assert.isDate(Date.now), "Should return true for a test on a 'Date.now' argument.");
+    assert.ok(!TS.Utils.Assert.isDate("2016-01-01T00:00:00"), "Should return false for a test on a date string.")
+    assert.ok(!TS.Utils.Assert.isDate({}), "Should return false for a test on an empty object.")
+    assert.ok(!TS.Utils.Assert.isDate(null), "Should return false for a test on a null argument.")
+    assert.ok(!TS.Utils.Assert.isDate(undefined), "Should return false for a test on an undefined argument.")
+  });
+
+
+  QUnit.test("isDateString", (assert) => 
+  {
+    assert.ok(TS.Utils.Assert.isDateString("2016-01-01T00:00:00"), "Should return true for a valid ISO date string.");
+    assert.ok(TS.Utils.Assert.isDateString("Mon Nov 28 2016"), "Should return true for a valid date string.");
+    assert.ok(TS.Utils.Assert.isDateString("Mon, 28 Nov 2016 17:02:37 GMT"), "Should return true for a valid GMT date string.");
+    assert.ok(TS.Utils.Assert.isDateString("11/28/2016"), "Should return true for a valid locale date string.");
+    assert.ok(!TS.Utils.Assert.isDateString("13/13/2016"), "Should return false for an invalid locale date string.");
+    assert.ok(!TS.Utils.Assert.isDateString("Mon, 28 Nov 2016 25:02:37 GMT"), "Should return false for an invalid GMT date string.");
+    assert.ok(!TS.Utils.Assert.isDateString("2016-00-01T00:00:00"), "Should return false for an invalid ISO date string.");
+    assert.ok(!TS.Utils.Assert.isDateString("no date"), "Should return false for a normal text string.")
+    assert.ok(!TS.Utils.Assert.isDateString({}), "Should return false for an empty object argument.")
+    assert.ok(!TS.Utils.Assert.isDateString(null), "Should return false for a null argument.")
+    assert.ok(!TS.Utils.Assert.isDateString(undefined), "Should return false for an undefined argument.")
+  });
+
+
+  QUnit.test("isDenseArray", (assert) => 
+  {
+    assert.ok(TS.Utils.Assert.isDenseArray([1, 2, 3]), "Should return true for a test on a dense array.");
+    assert.ok(TS.Utils.Assert.isDenseArray([]), "Should return true for a test on an empty array.");
+    assert.ok(!TS.Utils.Assert.isDenseArray([1, 2, 3, , 5, , 7]), "Should return false for a test on a sparse array.");
+    assert.ok(!TS.Utils.Assert.isDenseArray(null), "Should return false for a test on a null argument.");
+    assert.ok(!TS.Utils.Assert.isDenseArray(undefined), "Should return false for a test on an undefined argument.");
+    assert.ok(!TS.Utils.Assert.isDenseArray({}), "Should return false for a test on an argument which isn't an array.");
+  });
+
+
   QUnit.test("isEmptyArray", (assert) => 
   {
     assert.ok(TS.Utils.Assert.isEmptyArray([]), "Should return true for a test on an empty array.");

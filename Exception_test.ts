@@ -34,8 +34,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.AmbiguousResultException("ArgName", 5, ExceptionMessage, getInnerExcepton());
-    }, new TS.AmbiguousResultException("ArgName", 5, ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.AmbiguousResultException("ArgName", 5, ExceptionMessage, getInnerException());
+    }, new TS.AmbiguousResultException("ArgName", 5, ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -50,8 +50,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.ArgumentException("ArgName", 5, ExceptionMessage, getInnerExcepton());
-    }, new TS.ArgumentException("ArgName", 5, ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.ArgumentException("ArgName", 5, ExceptionMessage, getInnerException());
+    }, new TS.ArgumentException("ArgName", 5, ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -66,8 +66,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.ArgumentNullException("ArgName", ExceptionMessage, getInnerExcepton());
-    }, new TS.ArgumentNullException("ArgName", ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.ArgumentNullException("ArgName", ExceptionMessage, getInnerException());
+    }, new TS.ArgumentNullException("ArgName", ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -82,9 +82,9 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.ArgumentNullOrUndefinedException("ArgName", ExceptionMessage, getInnerExcepton());
+      throw new TS.ArgumentNullOrUndefinedException("ArgName", ExceptionMessage, getInnerException());
     },
-      new TS.ArgumentNullOrUndefinedException("ArgName", ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      new TS.ArgumentNullOrUndefinedException("ArgName", ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -99,8 +99,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.ArgumentNullUndefOrEmptyException("ArgName", ExceptionMessage, getInnerExcepton());
-    }, new TS.ArgumentNullUndefOrEmptyException("ArgName", ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.ArgumentNullUndefOrEmptyException("ArgName", ExceptionMessage, getInnerException());
+    }, new TS.ArgumentNullUndefOrEmptyException("ArgName", ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -115,8 +115,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.ArgumentNullOrUndefinedException("ArgName", ExceptionMessage, getInnerExcepton());
-    }, new TS.ArgumentNullOrUndefinedException("ArgName", ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.ArgumentNullOrUndefinedException("ArgName", ExceptionMessage, getInnerException());
+    }, new TS.ArgumentNullOrUndefinedException("ArgName", ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -131,8 +131,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.ArgumentOutOfRangeException("ArgName", 12, ExceptionMessage, getInnerExcepton());
-    }, new TS.ArgumentOutOfRangeException("ArgName", 12, ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.ArgumentOutOfRangeException("ArgName", 12, ExceptionMessage, getInnerException());
+    }, new TS.ArgumentOutOfRangeException("ArgName", 12, ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -147,8 +147,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.ArgumentUndefinedException("ArgName", ExceptionMessage, getInnerExcepton());
-    }, new TS.ArgumentUndefinedException("ArgName", ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.ArgumentUndefinedException("ArgName", ExceptionMessage, getInnerException());
+    }, new TS.ArgumentUndefinedException("ArgName", ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -163,8 +163,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.ArithmeticException(ExceptionMessage, getInnerExcepton());
-    }, new TS.ArithmeticException(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.ArithmeticException(ExceptionMessage, getInnerException());
+    }, new TS.ArithmeticException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -179,8 +179,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.DeprecatedException(ExceptionMessage, getInnerExcepton());
-    }, new TS.DeprecatedException(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.DeprecatedException(ExceptionMessage, getInnerException());
+    }, new TS.DeprecatedException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -195,8 +195,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.DirectoryNotFoundException("Dir", "C:/", ExceptionMessage, getInnerExcepton());
-    }, new TS.DirectoryNotFoundException("Dir", "C:/", ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.DirectoryNotFoundException("Dir", "C:/", ExceptionMessage, getInnerException());
+    }, new TS.DirectoryNotFoundException("Dir", "C:/", ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -211,8 +211,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.DividedByZeroException(ExceptionMessage, getInnerExcepton());
-    }, new TS.DividedByZeroException(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.DividedByZeroException(ExceptionMessage, getInnerException());
+    }, new TS.DividedByZeroException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -227,8 +227,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.EnvironmentNotSupportedException(ExceptionMessage, getInnerExcepton());
-    }, new TS.EnvironmentNotSupportedException(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.EnvironmentNotSupportedException(ExceptionMessage, getInnerException());
+    }, new TS.EnvironmentNotSupportedException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -243,8 +243,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.Exception(ExceptionMessage, getInnerExcepton());
-    }, new TS.Exception(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.Exception(ExceptionMessage, getInnerException());
+    }, new TS.Exception(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -259,8 +259,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.IndexOutOfRangeException(ExceptionMessage, getInnerExcepton());
-    }, new TS.IndexOutOfRangeException(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.IndexOutOfRangeException(ExceptionMessage, getInnerException());
+    }, new TS.IndexOutOfRangeException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -275,8 +275,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.InvalidCastException(ExceptionMessage, getInnerExcepton());
-    }, new TS.InvalidCastException(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.InvalidCastException(ExceptionMessage, getInnerException());
+    }, new TS.InvalidCastException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -291,8 +291,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.InvalidFormatException("ArgName", "NOP", ExceptionMessage, getInnerExcepton());
-    }, new TS.InvalidFormatException("ArgName", "NOP", ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.InvalidFormatException("ArgName", "NOP", ExceptionMessage, getInnerException());
+    }, new TS.InvalidFormatException("ArgName", "NOP", ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -307,8 +307,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.InvalidInvocationException(ExceptionMessage, getInnerExcepton());
-    }, new TS.InvalidInvocationException(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.InvalidInvocationException(ExceptionMessage, getInnerException());
+    }, new TS.InvalidInvocationException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -323,8 +323,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.InvalidOperationException(ExceptionMessage, getInnerExcepton());
-    }, new TS.InvalidOperationException(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.InvalidOperationException(ExceptionMessage, getInnerException());
+    }, new TS.InvalidOperationException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -339,8 +339,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.InvalidTypeException("ArgName", "NOP", ExceptionMessage, getInnerExcepton());
-    }, new TS.InvalidTypeException("ArgName", "NOP", ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.InvalidTypeException("ArgName", "NOP", ExceptionMessage, getInnerException());
+    }, new TS.InvalidTypeException("ArgName", "NOP", ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -355,8 +355,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.NotFiniteNumberException(ExceptionMessage, getInnerExcepton());
-    }, new TS.NotFiniteNumberException(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.NotFiniteNumberException(ExceptionMessage, getInnerException());
+    }, new TS.NotFiniteNumberException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -371,8 +371,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.NotImplementedException(ExceptionMessage, getInnerExcepton());
-    }, new TS.NotImplementedException(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.NotImplementedException(ExceptionMessage, getInnerException());
+    }, new TS.NotImplementedException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 
@@ -387,8 +387,8 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.OverflowException(ExceptionMessage, getInnerExcepton());
-    }, new TS.OverflowException(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.OverflowException(ExceptionMessage, getInnerException());
+    }, new TS.OverflowException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
   
@@ -403,14 +403,27 @@ namespace TS_Exception_test
 
     assert.throws(function ()
     {
-      throw new TS.TimeoutException(ExceptionMessage, getInnerExcepton());
-    }, new TS.TimeoutException(ExceptionMessage, getInnerExcepton()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.TimeoutException(ExceptionMessage, getInnerException());
+    }, new TS.TimeoutException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
+  });
+
+
+  QUnit.test("Hierarchy test", (assert) => 
+  {
+    let DivByZero: TS.DividedByZeroException;
+
+    DivByZero = new TS.DividedByZeroException("Test message", getInnerException());
+
+    assert.ok(DivByZero instanceof TS.DividedByZeroException, "Should be recognized as a 'TS.DividedByZeroException' exception.")
+    assert.ok(DivByZero instanceof TS.ArithmeticException, "Should be recognized as a 'TS.ArithmeticException' exception.")
+    assert.ok(DivByZero instanceof TS.Exception, "Should be recognized as a 'TS.Exception' exception.")
+
   });
 
   /**
   *  @description Creates and returns a new exception of type TS.Exception with the message text: "Inner exception message".
   */
-  function getInnerExcepton(): TS.Exception
+  function getInnerException(): TS.Exception
   {
     return new TS.Exception("Inner exception message");
   }

@@ -95,17 +95,17 @@ module TS_Utils_Test
     assert.throws(() => 
     {
       resultArray = TS.Utils.bitStringToByteArray(undefined);
-    }, TS.ArgumentNullUndefOrEmptyException, "The call should fail with a \"TS.ArgumentNullUndefOrEmptyException\" for an undefined parameter value.")
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for an undefined parameter value.")
 
     assert.throws(() => 
     {
       resultArray = TS.Utils.bitStringToByteArray(null);
-    }, TS.ArgumentNullUndefOrEmptyException, "The call should fail with a \"TS.ArgumentNullUndefOrEmptyException\" for a null parameter value.")
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for a null parameter value.")
 
     assert.throws(() => 
     {
       resultArray = TS.Utils.bitStringToByteArray("");
-    }, TS.ArgumentNullUndefOrEmptyException, "The call should fail with a \"TS.ArgumentNullUndefOrEmptyException\" for an empty parameter value.")
+    }, TS.ArgumentNullUndefOrWhiteSpaceException, "The call should fail with a \"TS.ArgumentNullUndefOrWhiteSpaceException\" for an empty parameter value.")
 
     assert.throws(() => 
     {
@@ -148,17 +148,17 @@ module TS_Utils_Test
     assert.throws(() => 
     {
       TS.Utils.byteArrayToBitString([]);
-    }, TS.ArgumentNullUndefOrEmptyException, "The call should fail with a \"TS.ArgumentNullUndefOrEmptyException\" for an empty byteArray argument value.")
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an empty byteArray argument value.")
 
     assert.throws(() =>
     {
       TS.Utils.byteArrayToBitString(null);
-    }, TS.ArgumentNullUndefOrEmptyException, "The call should fail with a \"TS.ArgumentNullUndefOrEmptyException\" for a null byteArray argument value.")
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for a null byteArray argument value.")
 
     assert.throws(() => 
     {
       TS.Utils.byteArrayToBitString(undefined);
-    }, TS.ArgumentNullUndefOrEmptyException, "The call should fail with a \"TS.ArgumentNullUndefOrEmptyException\" for an undefined byteArray argument value.")
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for an undefined byteArray argument value.")
 
   });
 
@@ -184,17 +184,17 @@ module TS_Utils_Test
     assert.throws(() => 
     {
       TS.Utils.byteArrayToUInt([]);
-    }, TS.ArgumentNullUndefOrEmptyException, "The call should fail with a \"TS.ArgumentNullUndefOrEmptyException\" for an empty byteArray argument value.")
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an empty byteArray argument value.")
 
     assert.throws(() =>
     {
-      TS.Utils.byteArrayToBitString(null);
-    }, TS.ArgumentNullUndefOrEmptyException, "The call should fail with a \"TS.ArgumentNullUndefOrEmptyException\" for a null byteArray argument value.")
+      TS.Utils.byteArrayToUInt(null);
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for a null byteArray argument value.")
 
     assert.throws(() => 
     {
-      TS.Utils.byteArrayToBitString(undefined);
-    }, TS.ArgumentNullUndefOrEmptyException, "The call should fail with a \"TS.ArgumentNullUndefOrEmptyException\" for an undefined byteArray argument value.")
+      TS.Utils.byteArrayToUInt(undefined);
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for an undefined byteArray argument value.")
   });
 
 
@@ -235,7 +235,7 @@ module TS_Utils_Test
     assert.throws(() => 
     {
       TS.Utils.byteToBitString(2.5);
-    }, TS.InvalidTypeException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for an floating point 'value' argument.");
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for a floating point 'value' argument.");
 
   });
 
@@ -373,7 +373,7 @@ module TS_Utils_Test
 
 
     TS.Utils.checkConstructorParameter("constructor", TestConstructorCallClass, "checkConstructorParameter");
-    assert.ok(true, "Should pass without an exception for a parameter value which is a constructor function.");
+    assert.ok(true, "Should pass for a parameter value which is a constructor function.");
 
     testFunc = function (first: number, second: number): number
     {
@@ -414,6 +414,80 @@ module TS_Utils_Test
     {
       TS.Utils.checkConstructorParameter("undefined", undefined, "checkConstructorParameter");
     }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for a parameter value which is undefined.");
+  });
+
+
+  QUnit.test("checkDateParameter", (assert) => 
+  {
+    TS.Utils.checkDateParameter("Date", new Date(), "checkDateParameter");
+    assert.ok(true, "Should pass for a parameter value which is a valid date object.");
+
+    assert.throws(() => 
+    {
+      TS.Utils.checkDateParameter("Empty object", {}, "checkDateParameter")
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for a parameter value which is an empty object.");
+
+    assert.throws(() => 
+    {
+      TS.Utils.checkDateParameter("null", null, "checkDateParameter")
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for a null parameter value.");
+
+    assert.throws(() => 
+    {
+      TS.Utils.checkDateParameter("undefined", undefined, "checkDateParameter")
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for an undefined parameter value.");
+  });
+
+
+  QUnit.test("checkDateStringParameter", (assert) => 
+  {
+    TS.Utils.checkDateStringParameter("2016-01-01T00:00:00", "2016-01-01T00:00:00", "checkDateParameter");
+    assert.ok(true, "Should pass for a parameter value which is a valid date string.");
+
+    TS.Utils.checkDateStringParameter("Mon Nov 28 2016", "Mon Nov 28 2016", "checkDateParameter");
+    assert.ok(true, "Should pass for a parameter value which is a valid date string.");
+
+    TS.Utils.checkDateStringParameter("Mon, 28 Nov 2016 17:02:37 GMT", "Mon, 28 Nov 2016 17:02:37 GMT", "checkDateParameter");
+    assert.ok(true, "Should pass for a parameter value which is a valid date string.");
+
+    TS.Utils.checkDateStringParameter("11/28/2016", "11/28/2016", "checkDateParameter");
+    assert.ok(true, "Should pass for a parameter value which is a valid date string.");
+
+    assert.throws(() =>
+    {
+      TS.Utils.checkDateStringParameter("13/13/2016", "13/13/2016", "checkDateStringParameter");
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an invalid date string parameter value.");
+
+    assert.throws(() =>
+    {
+      TS.Utils.checkDateStringParameter("Mon, 28 Nov 2016 25:02:37 GMT", "Mon, 28 Nov 2016 25:02:37 GMT", "checkDateStringParameter");
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an invalid date string parameter value.");
+
+    assert.throws(() =>
+    {
+      TS.Utils.checkDateStringParameter("2016-00-01T00:00:00", "2016-00-01T00:00:00", "checkDateStringParameter");
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an invalid date string parameter value.");
+
+    assert.throws(() =>
+    {
+      TS.Utils.checkDateStringParameter("no date", "no date", "checkDateStringParameter");
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an invalid date string parameter value.");
+
+    assert.throws(() =>
+    {
+      TS.Utils.checkDateStringParameter("{}", {}, "checkDateStringParameter");
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an empty object parameter value.");
+
+    assert.throws(() =>
+    {
+      TS.Utils.checkDateStringParameter("null", null, "checkDateStringParameter");
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for a null parameter value.");
+
+    assert.throws(() =>
+    {
+      TS.Utils.checkDateStringParameter("undefined", undefined, "checkDateStringParameter");
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for an undefined parameter value.");
+
   });
 
 
