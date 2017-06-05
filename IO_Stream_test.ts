@@ -1,6 +1,6 @@
 ﻿/// <reference path="_references.ts" />
 
-module TS_Utils_IO_Stream
+module TS_Utils_IO_Stream_test
 {
   QUnit.module("TS.IO.Stream",
     {
@@ -461,20 +461,20 @@ module TS_Utils_IO_Stream
       }
     }
 
-    function onError()
+    function onError(strm: TS.IO.Stream<string>)
     {
       throw stream.error;
     }
 
-    function onData()
+    function onData(strm: TS.IO.Stream<string>)
     {
-      while (stream.hasData)
+      while (strm.hasData)
       {
-        resultCharCount += stream.readBuffer().length;
+        resultCharCount += strm.readBuffer().length;
       }
     }
 
-    function onClose()
+    function onClose(strm: TS.IO.Stream<string>)
     {
       assert.ok(resultCharCount == MAX_INDEX, "The receiver should receive the same amount of data which has been sent.");
       asyncDone();
@@ -645,6 +645,234 @@ module TS_Utils_IO_Stream
         stream.close();
       }
     }, 50);
+
+  });
+
+
+  QUnit.test("TS.IO.ByteStream write sync -> read event controlled", (assert) => 
+  {
+    let asyncDone = assert.async();
+    let writeIndex = 0;
+    let MAX_INDEX = 10000;
+    let writeIntervalHandler: number;
+    let stream: TS.IO.ByteStream;
+    let resultByteCount: number = 0;
+
+
+    let generator = function* ()
+    {
+      let byteArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255];
+      let index = 0;
+      while (true)
+      {
+        if (index < byteArray.length - 1)
+        {
+          index++;
+        }
+        else
+        {
+          index = 0;
+        }
+        yield byteArray[index];
+      }
+    }
+
+    function onError(strm: TS.IO.ByteStream)
+    {
+      throw stream.error;
+    }
+
+    function onData(strm: TS.IO.ByteStream)
+    {
+      while (strm.hasData)
+      {
+        resultByteCount += strm.readBuffer().length;
+      }
+    }
+
+    function onClose(strm: TS.IO.ByteStream)
+    {
+      assert.ok(resultByteCount == MAX_INDEX, "The receiver should receive the same amount of data which has been sent.");
+      asyncDone();
+    }
+
+    stream = new TS.IO.ByteStream(3000, onClose, onData, onError);
+    let iter = generator();
+    writeIndex = 0;
+
+
+    writeIntervalHandler = window.setInterval(() =>
+    {
+      if (writeIndex < MAX_INDEX)
+      {
+        while (stream.canWrite && (writeIndex < MAX_INDEX) && (stream.freeBufferSize > 0))
+        {
+          stream.write(iter.next().value)
+          writeIndex++;
+        }
+      }
+      else
+      {
+        window.clearInterval(writeIntervalHandler);
+        stream.close();
+      }
+    }, 50);
+
+  });
+
+
+  QUnit.test("TS.IO.ByteStream write async -> read polling", (assert) => 
+  {
+    let asyncDone = assert.async();
+    let writeIndex = 0;
+    let readIntervalHandler: number;
+    let MAX_INDEX = 1000000;
+    let stream: TS.IO.ByteStream;
+    let resultByteCount: number = 0;
+
+
+    let generator = function* ()
+    {
+      let resultArray: Array<number>;
+      let byteArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255];
+      let index = 0;
+      while (true)
+      {
+        resultArray = new Array<number>();
+        let byteCount = 0;
+        while (byteCount < 5000)
+        {
+          if (index < byteArray.length - 1)
+          {
+            index++;
+          }
+          else
+          {
+            index = 0;
+          }
+          resultArray.push(byteArray[index]);
+          byteCount++;
+        }
+        yield resultArray;
+      }
+    }
+
+    stream = new TS.IO.ByteStream(5000);
+
+    readIntervalHandler = window.setInterval(() => 
+    {
+      if (stream.canRead)
+      {
+        while (stream.hasData)
+        {
+          resultByteCount += stream.readBuffer().length;
+        }
+      }
+
+      if (stream.isClosed)
+      {
+        assert.ok(resultByteCount == MAX_INDEX, "The receiver should receive the same amount of data which has been sent.");
+        asyncDone();
+      }
+
+    }, 50);
+
+
+    let iter = generator();
+    writeIndex = 0;
+
+    while ((writeIndex * 5000 < MAX_INDEX) && (stream.canWrite))
+    {
+      stream.writeAsync(iter.next().value)
+      writeIndex++;
+    }
+
+    stream.close();
+  });
+
+
+  QUnit.test("TS.IO.ByteStream write error", (assert) =>
+  {
+    let stream: TS.IO.ByteStream;
+    let byteArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 242, 243, 244, 245, 246, 247, 249, 250, 251, 252, 253, 254, 255];
+
+    let generator = function* ()
+    {
+      let index = 0;
+      while (true)
+      {
+        if (index < byteArray.length - 1)
+        {
+          index++;
+        }
+        else
+        {
+          index = 0;
+        }
+        yield byteArray[index];
+      }
+    }
+
+    stream = new TS.IO.ByteStream();
+
+    assert.throws(() =>
+    {
+      byteArray.push(256);
+      let iter = generator();
+      stream = new TS.IO.ByteStream();
+      for (let byteVal of iter)
+      {
+        stream.write(byteVal);
+      }
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an attempt to write an invalid argument.");
+
+    assert.throws(() =>
+    {
+      byteArray.pop();
+      byteArray.push(-1)
+      let iter = generator();
+      stream = new TS.IO.ByteStream();
+      for (let byteVal of iter)
+      {
+        stream.write(byteVal);
+      }
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an attempt to write an invalid argument.");
+
+    assert.throws(() =>
+    {
+      byteArray.pop();
+      byteArray[5] = undefined;
+      let iter = generator();
+      stream = new TS.IO.ByteStream();
+      for (let byteVal of iter)
+      {
+        stream.write(byteVal);
+      }
+    }, TS.ArgumentUndefinedException, "The call should fail with a \"TS.ArgumentUndefinedException\" for an attempt to write an undefined argument.");
+
+    assert.throws(() =>
+    {
+      stream = new TS.IO.ByteStream();
+      stream.write(byteArray);
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an attempt to write an invalid argument.");
+
+    assert.throws(() =>
+    {
+      byteArray.pop();
+      byteArray[5] = null;
+      let iter = generator();
+      stream = new TS.IO.ByteStream();
+      for (let byteVal of iter)
+      {
+        stream.write(byteVal);
+      }
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an attempt to write an invalid argument.");
+
+    assert.throws(() =>
+    {
+      stream = new TS.IO.ByteStream();
+      stream.write(byteArray);
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an attempt to write an invalid argument.");
 
   });
 

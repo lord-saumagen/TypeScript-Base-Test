@@ -296,19 +296,19 @@ namespace TS_Exception_test
   });
 
 
-  QUnit.test("TS.InvalidInvocationException constructor", function (assert)
+  QUnit.test("TS.InvalidInvokationException constructor", function (assert)
   {
     var ExceptionMessage = "Invalid invocation exception message";
 
     assert.throws(function ()
     {
-      throw new TS.InvalidInvocationException(ExceptionMessage);
-    }, new TS.InvalidInvocationException(ExceptionMessage), "Should raise an exception instance that matched with the expected instance.");
+      throw new TS.InvalidInvokationException(ExceptionMessage);
+    }, new TS.InvalidInvokationException(ExceptionMessage), "Should raise an exception instance that matched with the expected instance.");
 
     assert.throws(function ()
     {
-      throw new TS.InvalidInvocationException(ExceptionMessage, getInnerException());
-    }, new TS.InvalidInvocationException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
+      throw new TS.InvalidInvokationException(ExceptionMessage, getInnerException());
+    }, new TS.InvalidInvokationException(ExceptionMessage, getInnerException()), "Should raise an exception instance of the expected type with an inner exception.");
   });
 
 

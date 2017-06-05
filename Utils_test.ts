@@ -1,6 +1,6 @@
 ﻿/// <reference path="_references.ts" />
 
-module TS_Utils_Test
+module TS_Utils_test
 {
 
   class TestConstructorCallClass
@@ -163,13 +163,62 @@ module TS_Utils_Test
   });
 
 
+  QUnit.test("byteArrayToHexString", (assert) => 
+  {
+    let controlString = "0102030405060708090afafbfcfdfeff";
+    let byteArray: Array<number>;
+    let UIntArray: Uint8Array;
+    let resultString: string;
+
+    byteArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 250, 251, 252, 253, 254, 255];
+    UIntArray = new Uint8Array(byteArray);
+    
+
+    resultString = TS.Utils.byteArrayToHexString(byteArray);
+    assert.equal(resultString, controlString, "Should return the expected result string for a valid array of byte values.");
+    resultString = TS.Utils.byteArrayToHexString(UIntArray);
+    assert.equal(resultString, controlString, "Should return the expected result string for a valid Uint8Array.");
+
+    assert.throws(() => 
+    {
+      TS.Utils.byteArrayToHexString([0, 1, null, 3]);
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for a invalid byteArray argument value.")
+
+    assert.throws(() => 
+    {
+      TS.Utils.byteArrayToHexString([0XFF, 0XFF, 0XFF, 0XFF, 0XFF, 0XFF, 0XFF, 256]);
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for a byteArray argument value which exceeds the range of allowed values.");
+
+    assert.throws(() => 
+    {
+      TS.Utils.byteArrayToHexString([]);
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for an empty byteArray argument value.")
+
+    assert.throws(() =>
+    {
+      TS.Utils.byteArrayToHexString(null);
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for a null byteArray argument value.")
+
+    assert.throws(() => 
+    {
+      TS.Utils.byteArrayToHexString(undefined);
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for an undefined byteArray argument value.")
+  });
+
+
   QUnit.test("byteArrayToUInt", (assert) => 
   {
-    let byteArray: Array<number> = [0X49, 0X96, 0X02, 0XD2];
-    let controlResult: number = 1234567890;
+    let testNumberArray: Array<number> = [0X49, 0X96, 0X02, 0XD2];
+    let testUInt8Array: Uint8Array = new Uint8Array([0xff, 0xf0, 0x0f, 0x00]);
+    let numArrayResult: number = 1234567890;
+    let UInt8ArrayResult: number = 4293922560;
+    let testResult: number;
 
-    let result = TS.Utils.byteArrayToUInt(byteArray);
-    assert.equal(result, controlResult, "Should return the expected integer result.");
+    testResult = TS.Utils.byteArrayToUInt(testNumberArray);
+    assert.equal(testResult, numArrayResult, "Should return the expected integer result.");
+
+    testResult = TS.Utils.byteArrayToUInt(testUInt8Array);
+    assert.equal(testResult, UInt8ArrayResult, "Should return the expected integer result.");
 
     assert.throws(() => 
     {
@@ -179,7 +228,7 @@ module TS_Utils_Test
     assert.throws(() => 
     {
       TS.Utils.byteArrayToUInt([0XFF, 0XFF, 0XFF, 0XFF, 0XFF, 0XFF, 0XFF, 0XFF]);
-    }, TS.ArgumentOutOfRangeException, "The call should fail with a \"TS.ArgumentOutOfRangeException\" for an byteArray argument value which exceedes the range of alloewd values.");
+    }, TS.ArgumentOutOfRangeException, "The call should fail with a \"TS.ArgumentOutOfRangeException\" for an byteArray argument value which exceeds the range of allowed values.");
 
     assert.throws(() => 
     {
@@ -238,6 +287,31 @@ module TS_Utils_Test
     }, TS.InvalidTypeException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for a floating point 'value' argument.");
 
   });
+
+
+  QUnit.test("checkArgumentsLength", (assert) => 
+  {
+    let args: IArguments;
+
+    function threeArgs(num: number, str: string, obj: Object)
+    {
+      TS.Utils.checkArgumentsLength(arguments, 1, 3, "threeArgs");
+    }
+
+    threeArgs(1, "two", { name: "three" });
+    (threeArgs as any)(1, "two");
+    (threeArgs as any)(1);
+
+    assert.throws(() => 
+    {
+      (threeArgs as any)();
+    }, TS.InvalidInvokationException, "The call should fail with a \"TS.InvalidInvokationException\" for less arguments as required.");
+
+    assert.throws(() => 
+    {
+      (threeArgs as any)(1, "two", { name: "three" }, [4], true);
+    }, TS.InvalidInvokationException, "The call should fail with a \"TS.InvalidInvokationException\" for more arguments as allowed.");
+  })
 
 
   QUnit.test("checkArrayLikeParameter", (assert) => 
@@ -594,7 +668,7 @@ module TS_Utils_Test
     assert.throws(() => 
     {
       TS.Utils.checkInstanceOfParameter("testObj0", testObj0, testLiteralObj, "checkInstanceOf");
-    }, TS.InvalidInvocationException, "The call should fail with a \"TS.InvalidInvocationException\" for a type parameter value which is a literal boject.");
+    }, TS.InvalidInvokationException, "The call should fail with a \"TS.InvalidInvokationException\" for a type parameter value which is a literal boject.");
 
     assert.throws(() => 
     {
@@ -1141,6 +1215,26 @@ module TS_Utils_Test
   });
 
 
+  QUnit.test("NodeTypeEnum", (assert) => 
+  {
+    let xml = new DOMParser().parseFromString('<xml></xml>', "application/xml");
+
+    let cda = xml.createCDATASection('Some <CDATA> data & then some');
+    let doc: HTMLDocument = document;
+    let bod: HTMLBodyElement = document.body as HTMLBodyElement;
+    let att = document.createAttribute("attr");
+    let com = document.createComment("Comment");
+    let fra = document.createDocumentFragment();
+
+    assert.equal(doc.nodeType, TS.Utils.NodeTypeEnum.DOCUMENT_NODE, "Should pass with expected node type.");
+    assert.equal(bod.nodeType, TS.Utils.NodeTypeEnum.ELEMENT_NODE, "Should pass with expected node type.");
+    assert.equal(att.nodeType, TS.Utils.NodeTypeEnum.ATTRIBUTE_NODE, "Should pass with expected node type.");
+    assert.equal(cda.nodeType, TS.Utils.NodeTypeEnum.CDATA_SECTION_NODE, "Should pass with expected node type.");
+    assert.equal(com.nodeType, TS.Utils.NodeTypeEnum.COMMENT_NODE, "Should pass with expected node type.");
+    assert.equal(fra.nodeType, TS.Utils.NodeTypeEnum.DOCUMENT_FRAGMENT_NODE, "Should pass with expected node type.");
+  });
+
+
   QUnit.test("getValueFromEnum", (assert) => 
   {
     assert.equal(TS.Utils.getValueFromEnum("ONE", testEnum), 1, "Should return the expected enumeration value.");
@@ -1221,7 +1315,15 @@ module TS_Utils_Test
 
   QUnit.test("nodeTypeToString", (assert) => 
   {
-    assert.equal("ELEMENT_NODE", TS.Utils.nodeTypeToString(1), "Should return the expected string result.");
+    let nodeTypeStr: string;
+    let isValid: boolean;
+
+    for (let index = 1; index < 13; index++)
+    {
+      nodeTypeStr = TS.Utils.nodeTypeToString(index);
+      assert.ok(TS.Utils.Assert.isValueOfEnum(nodeTypeStr, TS.Utils.NodeTypeEnum), "The returned string should be a valid string.");
+    }
+
     assert.equal("undefined", TS.Utils.nodeTypeToString(0), "Should return the expected string result.");
     assert.equal("undefined", TS.Utils.nodeTypeToString(13), "Should return the expected string result.");
   });
@@ -1353,6 +1455,84 @@ module TS_Utils_Test
   });
 
 
+  QUnit.test("UInt16To2ByteArray", (assert) => 
+  {
+    let testVectors: Array<{ ByteArray: Array<number>, val: number }>;
+    let index: number;
+
+    testVectors = [{ ByteArray: [0, 1], val: 1 }, { ByteArray: [1, 1], val: 257 }, { ByteArray: [0xff, 0], val: 65280 }, { ByteArray: [0, 0xff], val: 255 }];
+
+    for (index = 0; index < testVectors.length; index++)
+    {
+      assert.deepEqual(TS.Utils.UInt16To2ByteArray(testVectors[index].val), testVectors[index].ByteArray, "Should return the expected byte array.");
+    }
+
+    assert.throws(() => 
+    {
+      TS.Utils.UInt16To2ByteArray(-1);
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for a parameter value which is a negative number.");
+
+    assert.throws(() => 
+    {
+      TS.Utils.UInt16To2ByteArray(2.5);
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for a parameter value which isn't an integer number.");
+
+    assert.throws(() =>
+    {
+      TS.Utils.UInt16To2ByteArray(65536);
+    }, TS.ArgumentOutOfRangeException, "The call should fail with a \"TS.ArgumentOutOfRangeException\" for a parameter value which exceeds the number range of a UInt16.");
+
+    assert.throws(() => 
+    {
+      TS.Utils.UInt16To2ByteArray(null);
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for a null parameter value.");
+
+    assert.throws(() => 
+    {
+      TS.Utils.UInt16To2ByteArray(undefined);
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentNullOrUndefinedException\" for an undefined parameter value.");
+  });
+
+
+  QUnit.test("UInt16ToHexString", (assert) => 
+  {
+    let testVectors: Array<{ str: string, val: number }>;
+    let index: number;
+
+    testVectors = [{ str: "ffff", val: 65535 }, { str: "0fff", val: 4095 }, { str: "00ff", val: 255 }, { str: "000f", val: 15 }];
+
+    for (index = 0; index < testVectors.length; index++)
+    {
+      assert.equal(TS.Utils.UInt16ToHexString(testVectors[index].val), testVectors[index].str, "Should return the expected hex string.");
+    }
+
+    assert.throws(() => 
+    {
+      TS.Utils.UInt16ToHexString(-1);
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.ArgumentException\" for a parameter value which is a negative number.");
+
+    assert.throws(() => 
+    {
+      TS.Utils.UInt16ToHexString(2.5);
+    }, TS.InvalidTypeException, "The call should fail with a \"TS.ArgumentException\" for a parameter value which is a negative number.");
+
+    assert.throws(() => 
+    {
+      TS.Utils.UInt16ToHexString(65536);
+    }, TS.ArgumentOutOfRangeException, "The call should fail with a \"TS.ArgumentException\" for a parameter value outside the byte number range.");
+
+    assert.throws(() => 
+    {
+      TS.Utils.UInt32ToHexString(null);
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentException\" for a null parameter value.");
+
+    assert.throws(() => 
+    {
+      TS.Utils.UByteToHexString(undefined);
+    }, TS.ArgumentNullOrUndefinedException, "The call should fail with a \"TS.ArgumentException\" for an undefined parameter value.");
+  });
+
+
   QUnit.test("UInt32To4ByteArray", (assert) => 
   {
     let testVectors: Array<{ ByteArray: Array<number>, val: number }>;
@@ -1362,7 +1542,7 @@ module TS_Utils_Test
 
     for (index = 0; index < testVectors.length; index++)
     {
-      assert.deepEqual(TS.Utils.UInt32To4ByteArray(testVectors[index].val), testVectors[index].ByteArray, "Should resturn the expected byte array.");
+      assert.deepEqual(TS.Utils.UInt32To4ByteArray(testVectors[index].val), testVectors[index].ByteArray, "Should return the expected byte array.");
     }
 
     assert.throws(() => 

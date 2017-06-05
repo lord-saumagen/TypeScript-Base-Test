@@ -1,6 +1,5 @@
-﻿/// <reference path="_references.ts" />
-var TS_Utils_IO_Stream;
-(function (TS_Utils_IO_Stream) {
+﻿var TS_Utils_IO_Stream_test;
+(function (TS_Utils_IO_Stream_test) {
   QUnit.module("TS.IO.Stream (plain js)", {
     before: function () {
       // runs once before anything else in the module
@@ -34,7 +33,7 @@ var TS_Utils_IO_Stream;
 
     assert.throws(() => {
       numberStream = new TS.IO.Stream(5000, eventHandler, eventHandler);
-    }, TS.InvalidInvocationException, "The constructor should fail with a \"TS.InvalidInvocationException\" exception when called with an invalid number of arguments.");
+    }, TS.InvalidInvokationException, "The constructor should fail with a \"TS.InvalidInvokationException\" exception when called with an invalid number of arguments.");
 
   });
-})(TS_Utils_IO_Stream || (TS_Utils_IO_Stream = {}));
+})(TS_Utils_IO_Stream_test || (TS_Utils_IO_Stream_test = {}));

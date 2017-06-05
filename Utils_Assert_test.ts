@@ -1,8 +1,7 @@
 ﻿/// <reference path="_references.ts" />
 
-module TS_Utils_Assert
+module TS_Utils_Assert_test
 {
-
 
   class Customer01 extends DATA.Customer
   {
@@ -82,12 +81,29 @@ module TS_Utils_Assert
   QUnit.test("isByteArray", (assert) => 
   {
     let testArray: Array<number> = [92, 1, -2, 3, 4, -5, 6, -7, 8, 9, -10, 11, 12, -13, 14, 15, -16, 17, 18, 19, -20, 21, 22, 23, 24, -25, 26, 27, 28, 29, -30, -31, 32, 33, 34, 35, -36, 37, 38, 39, 40, 41, -42, 43, 44, 45, 46, 47, -48, 49, 50, 51, -52, 53, 54, 55, -56, 57, 58, 59, -60, 61, 62, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 70, -111, 44, 46, 12, 75, -56, 43, 54, -90, 118];
+    let testUint8Array: Uint8Array = new Uint8Array([92, 1, -2, 3, 4, -5, 6, -7, 8, 9, -10, 11, 12, -13, 14, 15, -16, 17, 18, 19, -20, 21, 22, 23, 24, -25, 26, 27, 28, 29, -30, -31, 32, 33, 34, 35, -36, 37, 38, 39, 40, 41, -42, 43, 44, 45, 46, 47, -48, 49, 50, 51, -52, 53, 54, 55, -56, 57, 58, 59, -60, 61, 62, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 70, -111, 44, 46, 12, 75, -56, 43, 54, -90, 118]);
+
     assert.ok(TS.Utils.Assert.isByteArray([0]), "Should pass for a one element array with value 0.");
     assert.ok(TS.Utils.Assert.isByteArray([127]), "Should pass for a one element array with value 127.");
     assert.ok(!TS.Utils.Assert.isByteArray([128]), "Should fail for a one element array with a value > 127.");
     assert.ok(TS.Utils.Assert.isByteArray([-127]), "Should pass for a one element array with value -127.");
     assert.ok(!TS.Utils.Assert.isByteArray([-128]), "Should fail for a one element array with a value < -127.");
     assert.ok(TS.Utils.Assert.isByteArray(testArray), "Should pass for a test array with random byte values.");
+    assert.ok(TS.Utils.Assert.isByteArray(testArray), "Should pass for a test Uint8Array with random byte values.");
+  });
+
+
+  QUnit.test("isCanonicalGUIDString", (assert) => 
+  {
+    assert.ok(TS.Utils.Assert.isCanonicalGUIDString("00000000-0000-0000-0000-000000000000"), "Should pass for the zero GUID string.");
+    assert.ok(TS.Utils.Assert.isCanonicalGUIDString("fe8fb169-5af7-4ade-881c-19b1914b57be"), "Should pass for a random GUID string.");
+    assert.ok(TS.Utils.Assert.isCanonicalGUIDString("634acb60-1ea6-11e7-8000-97994bb29655"), "Should pass for time based GUID string.");
+    assert.ok(!TS.Utils.Assert.isCanonicalGUIDString("55c2e59-01ea6-11e7-8000-e74c859675e5"), "Should fail for GUID string with a wrong format.");
+    assert.ok(!TS.Utils.Assert.isCanonicalGUIDString("55c2e590-1ea6-11e7-8000-e74c859675e50"), "Should fail for GUID string with a wrong length.");
+    assert.ok(!TS.Utils.Assert.isCanonicalGUIDString(""), "Should fail for an empty GUID string.");
+    assert.ok(!TS.Utils.Assert.isCanonicalGUIDString(null), "Should fail for a null GUID string.");
+    assert.ok(!TS.Utils.Assert.isCanonicalGUIDString(undefined), "Should fail for a undefined GUID string.");
+
   });
 
 
@@ -136,6 +152,85 @@ module TS_Utils_Assert
     assert.ok(!TS.Utils.Assert.isEmptyArray(""), "Should return false for a test on an empty string.");
     assert.ok(!TS.Utils.Assert.isEmptyArray(null), "Should return false for a test on null.");
     assert.ok(!TS.Utils.Assert.isEmptyArray(undefined), "Should return false for a test on undefined.");
+  });
+
+
+  QUnit.test("isGUID", (assert) => 
+  {
+    let zeroGUID: TS.TypeCode.GUID;
+    let simpleGUID: TS.TypeCode.GUID;
+    let randomGUID: TS.TypeCode.RandomGUID;
+    let timeBaseGUID: TS.TypeCode.TimeBasedGUID;
+
+    zeroGUID = new TS.TypeCode.GUID();
+    simpleGUID = new TS.TypeCode.GUID("12345678-1234-1234-1234-123456789012");
+    randomGUID = new TS.TypeCode.RandomGUID();
+    timeBaseGUID = new TS.TypeCode.TimeBasedGUID();
+
+    assert.ok(TS.Utils.Assert.isGUID(zeroGUID), "Should pass for a zero GUID.");
+    assert.ok(TS.Utils.Assert.isGUID(simpleGUID), "Should pass for a simple GUID.");
+    assert.ok(TS.Utils.Assert.isGUID(randomGUID), "Should pass for a random GUID.");
+    assert.ok(TS.Utils.Assert.isGUID(timeBaseGUID), "Should pass for a time base GUID.");
+    assert.ok(!TS.Utils.Assert.isGUID({}), "Should fail for a call with an object which isn't a GUID.");
+    assert.ok(!TS.Utils.Assert.isGUID(null), "Should fail for a call with a null argument.");
+    assert.ok(!TS.Utils.Assert.isGUID(undefined), "Should fail for a call with an undefined argument.");
+  });
+
+
+  QUnit.test("isMACAddressString", (assert) => 
+  {
+    assert.ok(TS.Utils.Assert.isMACAddressString("01:23:45:67:89:AB"), "Should pass for a valid MAC address string.");
+    assert.ok(TS.Utils.Assert.isMACAddressString("01-23-45-67-89-ab"), "Should pass for a valid MAC address string.");
+    assert.ok(!TS.Utils.Assert.isMACAddressString("01:23:45:67:89:AB:CD"), "Should fail for a MAC address string which has the wrong length.");
+    assert.ok(!TS.Utils.Assert.isMACAddressString("01-23-45-67-89"), "Should fail for a MAC address string which has the wrong length.");
+    assert.ok(!TS.Utils.Assert.isMACAddressString("01:23:45:6G:89:AB"), "Should fail for a MAC address string which has invalid characters.");
+    assert.ok(!TS.Utils.Assert.isMACAddressString({}),"Should fail for a call with an argument that isn't a string.");
+    assert.ok(!TS.Utils.Assert.isMACAddressString(null), "Should fail for a null MAC address string.");
+    assert.ok(!TS.Utils.Assert.isMACAddressString(undefined), "Should fail for an undefined MAC address string.");
+  });
+
+
+  QUnit.test("isRandomGUID", (assert) => 
+  {
+    let zeroGUID: TS.TypeCode.GUID;
+    let simpleGUID: TS.TypeCode.GUID;
+    let randomGUID: TS.TypeCode.RandomGUID;
+    let timeBaseGUID: TS.TypeCode.TimeBasedGUID;
+
+    zeroGUID = new TS.TypeCode.GUID();
+    simpleGUID = new TS.TypeCode.GUID("12345678-1234-1234-1234-123456789012");
+    randomGUID = new TS.TypeCode.RandomGUID();
+    timeBaseGUID = new TS.TypeCode.TimeBasedGUID();
+
+    assert.ok(TS.Utils.Assert.isRandomGUID(randomGUID), "Should pass for a random GUID.");
+    assert.ok(!TS.Utils.Assert.isRandomGUID(timeBaseGUID), "Should fail for a time base GUID.");
+    assert.ok(!TS.Utils.Assert.isRandomGUID(simpleGUID), "Should fail for a simple GUID.");
+    assert.ok(!TS.Utils.Assert.isRandomGUID(zeroGUID), "Should fail for a zero GUID.");
+    assert.ok(!TS.Utils.Assert.isRandomGUID({}), "Should fail for a call with an object which isn't a GUID.");
+    assert.ok(!TS.Utils.Assert.isRandomGUID(null), "Should fail for a call with a null argument.");
+    assert.ok(!TS.Utils.Assert.isRandomGUID(undefined), "Should fail for a call with an undefined argument.");
+  });
+
+
+  QUnit.test("isTimeBasedGUID", (assert) => 
+  {
+    let zeroGUID: TS.TypeCode.GUID;
+    let simpleGUID: TS.TypeCode.GUID;
+    let randomGUID: TS.TypeCode.RandomGUID;
+    let timeBaseGUID: TS.TypeCode.TimeBasedGUID;
+
+    zeroGUID = new TS.TypeCode.GUID();
+    simpleGUID = new TS.TypeCode.GUID("12345678-1234-1234-1234-123456789012");
+    randomGUID = new TS.TypeCode.RandomGUID();
+    timeBaseGUID = new TS.TypeCode.TimeBasedGUID();
+
+    assert.ok(TS.Utils.Assert.isTimeBasedGUID(timeBaseGUID), "Should pass for a time base GUID.");
+    assert.ok(!TS.Utils.Assert.isTimeBasedGUID(randomGUID), "Should fail for a random GUID.");
+    assert.ok(!TS.Utils.Assert.isTimeBasedGUID(simpleGUID), "Should fail for a simple GUID.");
+    assert.ok(!TS.Utils.Assert.isTimeBasedGUID(zeroGUID), "Should fail for a zero GUID.");
+    assert.ok(!TS.Utils.Assert.isTimeBasedGUID({}), "Should fail for a call with an object which isn't a GUID.");
+    assert.ok(!TS.Utils.Assert.isTimeBasedGUID(null), "Should fail for a call with a null argument.");
+    assert.ok(!TS.Utils.Assert.isTimeBasedGUID(undefined), "Should fail for a call with an undefined argument.");
   });
 
 
@@ -205,18 +300,36 @@ module TS_Utils_Assert
 
   QUnit.test("isUnsignedByteArray", (assert) => 
   {
-    let testArray: Array<number> = [92, 1, -2, 3, 4, -5, 6, -7, 8, 9, -10, 11, 12, -13, 14, 15, -16, 17, 18, 19, -20, 21, 22, 23, 24, -25, 26, 27, 28, 29, -30, -31, 32, 33, 34, 35, -36, 37, 38, 39, 40, 41, -42, 43, 44, 45, 46, 47, -48, 49, 50, 51, -52, 53, 54, 55, -56, 57, 58, 59, -60, 61, 62, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 70, -111, 44, 46, 12, 75, -56, 43, 54, -90, 118];
+    let testUInt8Array: Uint8Array;
+    let testNumberArray: Array<number>;
+
+    testUInt8Array = new Uint8Array([0x00, 0x01, 0x0f, 0xff, 0xf0]);
+    testNumberArray = new Array<number>(...[0x00, 0x01, 0x0f, 0xff, 0xf0]);
+
+    assert.ok(TS.Utils.Assert.isUnsignedByteArray(testUInt8Array), "Should pass for a valid Uint8Array array.");
+    assert.ok(TS.Utils.Assert.isUnsignedByteArray(testNumberArray), "Should pass for a valid Array<number> array.");
+    assert.ok(!TS.Utils.Assert.isUnsignedByteArray([0, 0xb0101, 0xFF, , 12, 244]), "Should fail for a sparse array.")
+    assert.ok(!TS.Utils.Assert.isUnsignedByteArray([0, 1, 256, 12, 0xff ]), "Should fail for a one element array with an invalid element outside the byte number range.");
+    assert.ok(!TS.Utils.Assert.isUnsignedByteArray([ 0xff, 0b1100, -1, 244, 8]), "Should fail for a one element array with an invalid negative element.");
+
+  });
+
+
+  QUnit.test("isUnsignedByteValue", (assert) => 
+  {
+    let testArray: Uint8Array;
+    testArray = new Uint8Array([0x00, 0x01, 0x0f, 0xff, 0xf0]);
+
     testArray.forEach((value, index, arr) => 
     {
-      arr[index] = Math.abs(value * 2);
+      assert.ok(TS.Utils.Assert.isUnsignedByteValue(value),"Should pass for all valid unsigned byte values.")
     });
 
-    assert.ok(TS.Utils.Assert.isUnsignedByteArray([0]), "Should pass for a one element array with value 0.");
-    assert.ok(TS.Utils.Assert.isUnsignedByteArray([127]), "Should pass for a one element array with value 127.");
-    assert.ok(TS.Utils.Assert.isUnsignedByteArray([255]), "Should pass for a one element array with value 255.");
-    assert.ok(!TS.Utils.Assert.isUnsignedByteArray([256]), "Should fail for a one element array with a value > 255.");
-    assert.ok(!TS.Utils.Assert.isUnsignedByteArray([-1]), "Should fail for a one element array with value -1.");
-    assert.ok(TS.Utils.Assert.isUnsignedByteArray(testArray), "Should pass for a test array with random byte values.");
+    assert.ok(!TS.Utils.Assert.isUnsignedByteValue(-1), "Should fail for a signed byte value.")
+    assert.ok(!TS.Utils.Assert.isUnsignedByteValue(600), "Should fail for a value outside the byte number range.")
+    assert.ok(!TS.Utils.Assert.isUnsignedByteValue(null), "Should fail for a null value.")
+    assert.ok(!TS.Utils.Assert.isUnsignedByteValue(undefined), "Should fail for an undefined value.")
+
   });
 
 }

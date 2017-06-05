@@ -30,7 +30,7 @@ namespace TS_TypeCode_UInt64_test
     UInt64Num = new TS.TypeCode.UInt64();
     assert.ok(TS.Utils.Assert.isObject(UInt64Num), "Should return an object.");
     assert.ok(UInt64Num instanceof TS.TypeCode.UInt64, "The returned object should be an instance of TS.TypeCode.UInt64.");
-    assert.ok((UInt64Num.mostSignificantInteger == 0) && (UInt64Num.leastSignificantInteger == 0), "The returned object should have a value of 0 when constructe with the default constructor.");
+    assert.ok((UInt64Num.mostSignificantInteger == 0) && (UInt64Num.leastSignificantInteger == 0), "The returned object should have a value of 0 when constructed with the default constructor.");
 
     UInt64Num = new TS.TypeCode.UInt64(1);
     assert.ok(TS.Utils.Assert.isObject(UInt64Num), "Should return an object.");
@@ -196,12 +196,12 @@ namespace TS_TypeCode_UInt64_test
     firstUInt64Num = new TS.TypeCode.UInt64(0x12345678, 0x87654321);
     secondUInt64Num = new TS.TypeCode.UInt64(0x87654321, 0x12345678);
 
-    assert.ok(!TS.TypeCode.UInt64.equal(firstUInt64Num, secondUInt64Num),"The return value should be false for the equality comparsion of unequal numbers.");
-    assert.ok(!firstUInt64Num.equal(secondUInt64Num), "The return value should be false for the equality comparsion of unequal numbers.");
+    assert.ok(!TS.TypeCode.UInt64.equal(firstUInt64Num, secondUInt64Num),"The return value should be false for the equality comparison of unequal numbers.");
+    assert.ok(!firstUInt64Num.equal(secondUInt64Num), "The return value should be false for the equality comparison of unequal numbers.");
 
     secondUInt64Num = new TS.TypeCode.UInt64(0x12345678, 0x87654321);
-    assert.ok(TS.TypeCode.UInt64.equal(firstUInt64Num, secondUInt64Num), "The return value should be true for the equality comparsion of equal numbers.");
-    assert.ok(firstUInt64Num.equal(secondUInt64Num), "The return value should be true for the equality comparsion of equal numbers.");
+    assert.ok(TS.TypeCode.UInt64.equal(firstUInt64Num, secondUInt64Num), "The return value should be true for the equality comparison of equal numbers.");
+    assert.ok(firstUInt64Num.equal(secondUInt64Num), "The return value should be true for the equality comparison of equal numbers.");
 
     assert.throws(() => 
     {
@@ -233,15 +233,15 @@ namespace TS_TypeCode_UInt64_test
     firstUInt64Num = new TS.TypeCode.UInt64(0x12345678, 0x87654321);
     secondUInt64Num = new TS.TypeCode.UInt64(0x87654321, 0x12345678);
 
-    assert.ok(!TS.TypeCode.UInt64.greater(firstUInt64Num, secondUInt64Num), "The return value should be false for the greater comparsion of a number which is less than the compared number.");
-    assert.ok(!firstUInt64Num.greater(secondUInt64Num), "The return value should be false for the greater comparsion with a bigger number.");
+    assert.ok(!TS.TypeCode.UInt64.greater(firstUInt64Num, secondUInt64Num), "The return value should be false for the greater comparison of a number which is less than the compared number.");
+    assert.ok(!firstUInt64Num.greater(secondUInt64Num), "The return value should be false for the greater comparison with a bigger number.");
 
-    assert.ok(TS.TypeCode.UInt64.greater(secondUInt64Num, firstUInt64Num), "The return value should be true for greater comparsion of a number which is bigger than the compared number.");
-    assert.ok(secondUInt64Num.greater(firstUInt64Num), "The return value should be true for the greater comparsion of smaller number.");
+    assert.ok(TS.TypeCode.UInt64.greater(secondUInt64Num, firstUInt64Num), "The return value should be true for greater comparison of a number which is bigger than the compared number.");
+    assert.ok(secondUInt64Num.greater(firstUInt64Num), "The return value should be true for the greater comparison of smaller number.");
 
     secondUInt64Num = new TS.TypeCode.UInt64(0x12345678, 0x87654321);
-    assert.ok(!TS.TypeCode.UInt64.greater(firstUInt64Num, secondUInt64Num), "The return value should be false for the greater comparsion of two equal numbers.");
-    assert.ok(!firstUInt64Num.greater(secondUInt64Num), "The return value should be false for the greater comparsion with an equal number.");
+    assert.ok(!TS.TypeCode.UInt64.greater(firstUInt64Num, secondUInt64Num), "The return value should be false for the greater comparison of two equal numbers.");
+    assert.ok(!firstUInt64Num.greater(secondUInt64Num), "The return value should be false for the greater comparison with an equal number.");
 
     assert.throws(() => 
     {
@@ -273,15 +273,15 @@ namespace TS_TypeCode_UInt64_test
     firstUInt64Num = new TS.TypeCode.UInt64(0x12345678, 0x87654321);
     secondUInt64Num = new TS.TypeCode.UInt64(0x87654321, 0x12345678);
 
-    assert.ok(TS.TypeCode.UInt64.less(firstUInt64Num, secondUInt64Num), "The return value should be true for the less comparsion of a number which is less than the compared number.");
-    assert.ok(firstUInt64Num.less(secondUInt64Num), "The return value should be true for the less comparsion with a bigger number.");
+    assert.ok(TS.TypeCode.UInt64.less(firstUInt64Num, secondUInt64Num), "The return value should be true for the less comparison of a number which is less than the compared number.");
+    assert.ok(firstUInt64Num.less(secondUInt64Num), "The return value should be true for the less comparison with a bigger number.");
 
-    assert.ok(!TS.TypeCode.UInt64.less(secondUInt64Num, firstUInt64Num), "The return value should be false for a less comparsion of a number which is bigger than the compared number.");
-    assert.ok(!secondUInt64Num.less(firstUInt64Num), "The return value should be false for the less comparsion with smaller number.");
+    assert.ok(!TS.TypeCode.UInt64.less(secondUInt64Num, firstUInt64Num), "The return value should be false for a less comparison of a number which is bigger than the compared number.");
+    assert.ok(!secondUInt64Num.less(firstUInt64Num), "The return value should be false for the less comparison with smaller number.");
 
     secondUInt64Num = new TS.TypeCode.UInt64(0x12345678, 0x87654321);
-    assert.ok(!TS.TypeCode.UInt64.less(firstUInt64Num, secondUInt64Num), "The return value should be false for the less comparsion of two equal numbers.");
-    assert.ok(!firstUInt64Num.less(secondUInt64Num), "The return value should be false for the less comparsion with an equal number.");
+    assert.ok(!TS.TypeCode.UInt64.less(firstUInt64Num, secondUInt64Num), "The return value should be false for the less comparison of two equal numbers.");
+    assert.ok(!firstUInt64Num.less(secondUInt64Num), "The return value should be false for the less comparison with an equal number.");
 
     assert.throws(() => 
     {
@@ -365,7 +365,7 @@ namespace TS_TypeCode_UInt64_test
     assert.throws(() => 
     {
       let result = TS.TypeCode.UInt64.UInt64ToUInt(secondUInt64Num)
-    }, TS.OverflowException, "The call should fail with a \"TS.OverflowException\" for an attempt to convert an UInt64 wihich exceeds the number 'Number.MAX_SAFE_INTERGER'.");
+    }, TS.OverflowException, "The call should fail with a \"TS.OverflowException\" for an attempt to convert an UInt64 which exceeds the number 'Number.MAX_SAFE_INTERGER'.");
 
     assert.throws(() => 
     {

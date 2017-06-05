@@ -1,15 +1,15 @@
-﻿var TS_NG_Utils_test;
-(function (TS_NG_Utils_test) {
+﻿var TS_Utils_test;
+(function (TS_Utils_test) {
   "use strict";
   var TestConstructorCallClass = (function () {
     function TestConstructorCallClass(ID) {
       if (ID === void 0) { ID = "1"; }
       this.ID = ID;
-      TS.Utils.checkConstructorCall(this, TS_NG_Utils_test.TestConstructorCallClass);
+      TS.Utils.checkConstructorCall(this, TS_Utils_test.TestConstructorCallClass);
     }
     return TestConstructorCallClass;
   })();
-  TS_NG_Utils_test.TestConstructorCallClass = TestConstructorCallClass;
+  TS_Utils_test.TestConstructorCallClass = TestConstructorCallClass;
   QUnit.module("TS.Utils (plain js)", {
     before: function () {
       // runs once before anything else in the module
@@ -62,4 +62,4 @@
     }, TS.InvalidTypeException, "The call should fail with a \"TS.InvalidTypeException\" for a parameter value which isn't a number.");
   });
 
-})(TS_NG_Utils_test || (TS_NG_Utils_test = {}));
+})(TS_Utils_test || (TS_Utils_test = {}));
